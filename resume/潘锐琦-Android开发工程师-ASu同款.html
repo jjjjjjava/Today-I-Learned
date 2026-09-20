@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>潘锐琦 - Android开发工程师</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    :root {
+      --blue: #2458b8;
+      --blue-deep: #174ea6;
+      --text: #151a22;
+      --muted: #596273;
+      --band: #f2f4f7;
+      --line: #d7dde7;
+      --code-bg: #eef1f5;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #fff; }
+    body { color: var(--text); font-family: "Microsoft YaHei", "SimHei", "黑体", sans-serif; font-size: 9.8pt; line-height: 1.29; text-rendering: optimizeLegibility; }
+    ::selection { background: rgba(36, 88, 184, .16); }
+    .toolbar { position: sticky; z-index: 10; top: 6px; display: flex; align-items: center; gap: 7px; width: max-content; max-width: calc(100vw - 32px); margin: 6px auto 8px; padding: 7px 10px; border: 1px solid #d3d7df; border-radius: 8px; background: #fff; box-shadow: 0 4px 14px rgba(15, 23, 42, .12); color: #334155; font: 13px/1 Arial, "Microsoft YaHei", sans-serif; }
+    .toolbar label, .toolbar-title { color: #475569; font-weight: 700; white-space: nowrap; }
+    .toolbar button, .toolbar select { height: 32px; border-radius: 5px; font: inherit; transition: border-color .15s ease, box-shadow .15s ease, background .15s ease, transform .15s ease; }
+    .print-button { flex: 0 0 auto; padding: 0 12px; border: 1px solid var(--blue); background: var(--blue); color: #fff; cursor: pointer; font-weight: 700; }
+    .print-button:hover { background: #1d4ed8; }
+    .page-mode-select { min-width: 148px; padding: 0 7px; border: 1px solid #cbd5e1; background: #fff; color: #1e293b; cursor: pointer; }
+    .format-select { min-width: 100px; padding: 0 7px; border: 1px solid #cbd5e1; background: #fff; color: #1e293b; cursor: pointer; }
+    .format-select.font-size { min-width: 58px; }
+    .toolbar select:hover, .toolbar select:focus { border-color: #7296d8; box-shadow: 0 0 0 2px rgba(36, 88, 184, .12); outline: none; }
+    .toolbar-divider { width: 1px; height: 22px; background: #e2e8f0; margin: 0 2px; }
+    .tool-button { width: 32px; min-width: 32px; padding: 0; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; cursor: pointer; font-weight: 700; }
+    .tool-button:hover, .tool-button.active { border-color: #7296d8; background: #eff6ff; color: #1d4ed8; }
+    .history-button { width: auto; min-width: 46px; padding: 0 8px; }
+    .save-status { color: #64748b; white-space: nowrap; font-size: 12px; }
+    .color-control { display: flex; align-items: center; gap: 4px; height: 32px; padding: 0 5px; border: 1px solid #cbd5e1; border-radius: 5px; background: #fff; cursor: pointer; }
+    .color-control input { width: 21px; height: 21px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    @media screen and (max-width: 980px) { .toolbar { top: 6px; max-width: calc(100vw - 20px); flex-wrap: wrap; justify-content: center; } }
+    @media print { .toolbar { display: none; } }
+    .sheet { width: 210mm; min-height: 0; padding: 6mm 9mm 7mm; border-top: 0; margin: 0 auto; }
+    .page-break { break-before: page; page-break-before: always; }
+    body[data-page-mode="continuous"] { width: 100%; }
+    body[data-page-mode="continuous"] .sheet { width: 210mm; }
+    body[data-page-mode="continuous"] .sheet + .sheet { padding-top: 0; }
+    @media screen {
+      body[data-page-mode="paged"] { min-height: 100vh; padding: 4mm 0 12mm; background: #eef0f3; }
+      body[data-page-mode="paged"] .sheet { min-height: 297mm; margin: 0 auto 12mm; background: #fff; box-shadow: 0 2px 18px rgba(31, 41, 55, .18); }
+      body[data-page-mode="paged"] .sheet:last-of-type { margin-bottom: 0; }
+      body[data-page-mode="continuous"] { background: #fff; }
+      body[data-page-mode="continuous"] .sheet { margin: 0 auto; box-shadow: none; }
+    }
+    @media print {
+      body[data-page-mode="paged"] .sheet { min-height: 297mm; margin: 0; box-shadow: none; }
+      body[data-page-mode="continuous"] .sheet { min-height: 0; margin: 0; box-shadow: none; }
+    }
+    [contenteditable="true"]:focus { outline: 2px solid #b7caf3; outline-offset: 2px; }
+    h1 { margin: 0 0 2px; font-family: "SimHei", "Microsoft YaHei", sans-serif; font-size: 21.5pt; line-height: 1.03; font-weight: 800; letter-spacing: .055em; }
+    .header-grid { display: grid; grid-template-columns: minmax(0, 1fr) 25mm; gap: 6mm; align-items: start; padding-top: 1.5mm; }
+    .profile-photo-slot { position: relative; width: 25mm; height: 32mm; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #c7ccd4; background: #fafafa; color: #8b919c; font: 8pt/1.2 Arial, sans-serif; text-align: center; cursor: pointer; }
+    .profile-photo-slot:hover, .profile-photo-slot:focus-visible { border-color: #2458b8; outline: none; }
+    .profile-photo-slot::after { content: "点击上传"; position: absolute; inset: auto 0 0; padding: 4px 2px; background: rgba(36, 88, 184, .88); color: #fff; font: 8pt/1.2 Arial, "Microsoft YaHei", sans-serif; opacity: 0; transition: opacity .15s ease; }
+    .profile-photo-slot:hover::after, .profile-photo-slot:focus-visible::after { opacity: 1; }
+    .profile-photo-slot.has-photo::after { content: "点击替换"; }
+    .photo-placeholder { pointer-events: none; }
+    .photo-input { display: none; }
+    .profile-photo-slot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .meta-row { display: flex; align-items: center; gap: 4px; margin: 1px 0; font-size: 9.55pt; line-height: 1.3; white-space: nowrap; }
+    .meta-icon { width: 13px; height: 13px; object-fit: contain; flex: 0 0 auto; }
+    .meta-row strong { font-weight: 700; }
+    .separator { color: #2d2d2d; padding: 0 5px; }
+    .section { margin-top: 5px; }
+    .section-title { margin: 0 0 3px; padding-bottom: 2px; border-bottom: 1.5px solid var(--blue); color: var(--blue); font-family: "SimHei", "Microsoft YaHei", sans-serif; font-size: 15.5pt; line-height: 1.03; font-weight: 800; letter-spacing: -.025em; }
+    .lead { margin: 3px 0 4px; color: #1d448f; font-size: 10.8pt; line-height: 1.35; font-weight: 700; }
+    .evidence-link { margin: 1px 0 3px; color: #2458b8; font-size: 9.6pt; font-weight: 700; }
+    .evidence-link a { color: inherit; }
+    .evidence-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .evidence-link { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; }
+    .trend-badge { min-width: 135px; padding: 4px 7px; border: 1px solid #7351a3; border-radius: 6px; color: #7351a3; text-align: center; font: 7px/1.25 Arial, sans-serif; }
+    .trend-badge strong { font-size: 8px; }
+    .company { display: flex; align-items: center; gap: 6px; min-height: 25px; margin: 4px 0 3px; padding: 3px 7px 3px 8px; border-left: 3px solid rgba(36, 88, 184, .72); border-radius: 2px 5px 5px 2px; background: var(--band); box-shadow: inset 0 -1px 0 rgba(89, 98, 115, .06); page-break-inside: avoid; }
+    .company-logo { width: 21px; height: 21px; object-fit: contain; flex: 0 0 auto; }
+    .company-name { flex: 1; min-width: 0; font-size: 10.1pt; font-weight: 700; }
+    .company-meta { color: #202020; font-size: 8.8pt; white-space: nowrap; }
+    .education-name .education-major { margin-left: 18px; }
+    .project { margin: 2px 0 3px; page-break-inside: avoid; }
+    .project-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 2px 0 1px; }
+    .project-heading .project-title { flex: 1 1 auto; min-width: 0; margin: 0; }
+    .project-title { margin: 2px 0 1px; color: #244b9b; font-family: Georgia, "Times New Roman", "Microsoft YaHei", sans-serif; font-size: 10.4pt; line-height: 1.1; font-weight: 700; }
+    .project-signal { flex: 0 0 auto; padding-left: 7px; border-left: 1px solid #a9bde4; color: var(--blue-deep); font-family: Georgia, "Times New Roman", serif; font-size: 8.5pt; line-height: 1.05; font-weight: 700; white-space: nowrap; letter-spacing: .01em; }
+    ul { margin: 1px 0 2px 15px; padding: 0; }
+    li { margin: .6px 0; }
+    li::marker { font-size: .8em; }
+    .nested { margin-left: 16px; }
+    .nested::marker { content: "○ "; }
+    .nested-deep { margin-left: 35px; }
+    .nested-deep::marker { content: "▪ "; }
+    .code { padding: 0 2px; border-radius: 2px; background: var(--code-bg); font-family: "Cascadia Mono", Consolas, monospace; font-size: .9em; }
+    .muted { color: var(--muted); }
+    .small { font-size: 8.7pt; }
+    a { color: var(--blue); text-decoration-thickness: .7px; text-underline-offset: 1px; }
+    a:hover { color: #123f8f; text-decoration-thickness: 1.2px; }
+    a:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid rgba(36, 88, 184, .42); outline-offset: 2px; }
+    .status { color: #2458b8; font-weight: 700; white-space: nowrap; }
+    .compact { margin-top: 1px; margin-bottom: 1px; }
+    .skills-line { margin: 1px 0; }
+    .article-links { margin-top: 2px; }
+    .article-links li { margin: 1px 0; }
+    @media print {
+      .sheet { width: 210mm; height: 297mm; min-height: 297mm; overflow: hidden; }
+      a { color: var(--blue); }
+    }
+
+    /* Editorial résumé system: quiet structure, evidence-first hierarchy. */
+    body { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif; font-size: 9.55pt; line-height: 1.34; }
+    .sheet { padding: 7mm 10mm 8mm; }
+    h1 { margin: 0; color: #171b22; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 23pt; line-height: 1; font-weight: 800; letter-spacing: .02em; }
+    .header-grid { grid-template-columns: minmax(0, 1fr) 24mm; gap: 5mm; padding-top: 0; align-items: start; }
+    .profile-photo-slot { width: 24mm; height: 31mm; border: 0; box-shadow: inset 0 0 0 1px #d9dee7; background: #f7f8fa; }
+    .identity-line { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+    .education-inline { display: inline-flex; align-items: center; gap: 5px; color: #222832; font-size: 10.2pt; font-weight: 700; white-space: nowrap; }
+    .education-inline img { width: 14px; height: 14px; }
+    .education-dates { margin-left: auto; color: var(--blue); font-size: 9.8pt; font-weight: 700; white-space: nowrap; }
+    .target-row { display: flex; align-items: baseline; gap: 8px; margin-top: 5px; color: var(--blue); font-size: 10.1pt; line-height: 1.25; }
+    .target-row .target-label { flex: 0 0 auto; font-weight: 700; }
+    .target-row strong { color: #223f78; font-weight: 700; }
+    .contact-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 12px; margin-top: 6px; font-size: 9.2pt; line-height: 1.2; }
+    .contact-item { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .contact-item img { width: 12px; height: 12px; object-fit: contain; }
+    .header-rule { height: 2px; margin-top: 5px; background: linear-gradient(90deg, var(--blue) 0 72%, #d8e0ed 72% 100%); }
+    .section { margin-top: 5px; }
+    .section-title { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; padding: 0 0 3px; border-bottom: .7px solid #d9dee7; color: #20252d; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12.2pt; line-height: 1.1; font-weight: 800; letter-spacing: 0; }
+    .section-title::after { content: ""; width: 34mm; height: 1.5px; margin-left: 2px; align-self: end; background: var(--blue); }
+    .section-icon { width: 15px; height: 15px; object-fit: contain; flex: 0 0 auto; }
+    .skills-panel { display: grid; grid-template-columns: 21mm minmax(0, 1fr); column-gap: 7px; row-gap: 2px; margin: 0 0 3px; font-size: 9.15pt; }
+    .skill-label { color: #2b3440; font-weight: 800; }
+    .skill-value { color: #242a33; }
+    .company { min-height: 0; margin: 5px 0 3px; padding: 3px 0 4px; border: 0; border-radius: 0; border-bottom: .7px solid #e1e5eb; background: transparent; box-shadow: none; }
+    .company-name { color: #171b22; font-size: 10.1pt; font-weight: 800; }
+    .company-name .company-focus { color: #4e5968; font-size: 9.1pt; font-weight: 600; }
+    .company-meta { color: var(--blue); font-size: 9.15pt; font-weight: 700; }
+    .project { margin: 3px 0 5px; }
+    .project-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 2px 0 1px; }
+    .project-title { flex: 1 1 auto; min-width: 0; margin: 0; color: #171b22; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 10.2pt; line-height: 1.16; font-weight: 800; }
+    .project-title .project-context { color: #66717f; font-size: 8.9pt; font-weight: 600; }
+    .project-proof { flex: 0 0 auto; color: var(--blue); font-size: 8.8pt; line-height: 1.1; font-weight: 800; white-space: nowrap; }
+    ul { margin: 2px 0 2px 15px; }
+    li { margin: .8px 0; }
+    li > strong:first-child { color: var(--blue); }
+    .nested { margin-left: 16px; }
+    .code { background: #f0f2f5; }
+    .repo-block { margin: 2px 0 3px; font-size: 9.2pt; }
+    .repo-line, .pr-line { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; min-height: 18px; }
+    .repo-line { justify-content: space-between; }
+    .repo-link, .repo-stats, .pr-link { display: inline-flex; align-items: center; gap: 5px; }
+    .repo-link img, .pr-link img, .platform-link img { width: 13px; height: 13px; object-fit: contain; flex: 0 0 auto; }
+    .repo-link a, .pr-link { color: var(--blue); font-weight: 700; }
+    .repo-stats { color: #2a3039; font-weight: 700; }
+    .repo-stats img { width: 14px; height: 14px; }
+    .pr-label { color: #20252d; font-weight: 800; }
+    .pr-status { color: var(--blue); font-weight: 800; }
+    .platform-link { display: inline-flex; align-items: center; gap: 5px; }
+    .article-links { margin-top: 2px; }
+    .article-links li { margin: 1px 0; }
+    @media screen and (max-width: 760px) {
+      .identity-line { flex-wrap: wrap; gap: 5px 10px; }
+      .education-dates { margin-left: 0; }
+      .project-head { align-items: flex-start; }
+    }
+
+    /* Original résumé visual language, with the new evidence-first content. */
+    :root { --blue: #00a99d; --blue-deep: #008d84; --text: #173543; --muted: #78909a; --band: #e7efec; --line: #bfcfce; --code-bg: rgba(23, 53, 67, .07); }
+    body { color: #48606b; background: #e9e8e3; font-family: "Century Gothic", "Avenir Next", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 9.25pt; line-height: 1.31; }
+    body[data-page-mode="continuous"] { background: #f6f4ec; }
+    .sheet { position: relative; padding: 7mm 10mm 13mm 18mm; background: #f6f4ec; }
+    .sheet::before { content: ""; position: absolute; top: 9mm; bottom: 13mm; left: 13mm; width: 1px; background: #d1dad7; }
+    h1 { color: #173543; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 23pt; font-weight: 800; }
+    .header-grid { position: relative; grid-template-columns: minmax(0, 1fr) 24mm; gap: 6mm; min-height: 39mm; margin: 0 0 5mm; padding: 5mm 6mm; border-left: 1.8mm solid #00a99d; border-radius: 0 4mm 4mm 0; background: #e7efec; }
+    .header-grid::after { content: ""; position: absolute; right: 2mm; top: 7mm; bottom: 4mm; width: 1.3mm; background: #00a99d; }
+    .profile-photo-slot { z-index: 1; width: 23mm; height: 30mm; border: 1mm solid #fff; background: #fff; box-shadow: 1.5mm 1.5mm 0 #00a99d; }
+    .identity-line { gap: 10px; }
+    .education-inline { color: #314d58; font-size: 9.7pt; }
+    .education-dates { color: #008d84; font-size: 9pt; }
+    .target-row { margin-top: 4px; color: #008d84; font-size: 9.6pt; }
+    .target-row strong { color: #314d58; }
+    .contact-row { margin-top: 5px; color: #70858d; font-size: 8.7pt; }
+    .header-rule { height: 1.5px; margin-top: 5px; background: linear-gradient(90deg, #00a99d 0 58%, #bfd0cd 58% 100%); }
+    a { color: #008d84; }
+    a:hover { color: #006f69; }
+    .section { margin-top: 3mm; }
+    .section-title { position: relative; display: block; height: 11mm; margin: 0 0 2mm; padding: 4.6mm 0 .8mm 15mm; border-bottom: 1px solid #bfcfce; color: #173543; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14pt; line-height: 1; font-weight: 700; }
+    .section-title::before { content: attr(data-index); position: absolute; left: 0; top: 0; display: flex; align-items: center; justify-content: center; width: 11mm; height: 11mm; background: #00a99d; color: #fff; font: 800 8pt/1 "Century Gothic", Arial, sans-serif; }
+    .section-title::after { content: attr(data-en); position: absolute; left: 15mm; top: 1.1mm; width: auto; height: auto; margin: 0; background: transparent; color: #00a99d; font: 800 7pt/1 "Century Gothic", Arial, sans-serif; letter-spacing: .025em; }
+    .section-icon { display: none; }
+    .skills-panel { grid-template-columns: 19mm minmax(0, 1fr); column-gap: 6px; row-gap: 1px; margin-bottom: 1mm; color: #48606b; font-size: 8.8pt; }
+    .skill-label { color: #294652; }
+    .skill-value { color: #48606b; }
+    .company { min-height: 7mm; margin: 2mm 0 1.5mm; padding: 1.2mm 2mm; border: 0; border-bottom: 1px solid #d3ddda; border-radius: 0; background: rgba(255, 255, 255, .46); }
+    .company-brand { width: auto; height: 5mm; object-fit: contain; flex: 0 0 auto; }
+    .company-brand.wandianzhang { width: 23mm; }
+    .company-brand.acoinfo { width: 18mm; }
+    .company-name { color: #173543; font-size: 9.7pt; }
+    .company-name .company-focus { color: #607680; font-size: 8.4pt; }
+    .company-meta { color: #008d84; font-size: 8.5pt; }
+    .project { margin: 1.4mm 0 2.2mm; }
+    .project-head, .open-source-section .project > .project-title { min-height: 7mm; margin: 0 0 1mm; padding: 1.3mm 2mm; border-left: 1.8mm solid #00a99d; background: rgba(255, 255, 255, .58); }
+    .project-title { color: #173543; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 9.9pt; }
+    .project-title .project-context { color: #71858d; font-size: 8.2pt; }
+    .project-proof { color: #008d84; font-size: 8.35pt; }
+    ul { margin: 1mm 0 1mm 5mm; }
+    li { margin: .35mm 0; padding-left: .5mm; }
+    li::marker { color: #00a99d; }
+    li > strong:first-child { color: #008d84; }
+    .nested { margin-left: 5mm; }
+    .code { background: rgba(23, 53, 67, .07); }
+    .repo-block { margin: .5mm 1mm 1mm 2mm; color: #48606b; font-size: 8.25pt; }
+    .repo-line, .pr-line { min-height: 4mm; gap: .85mm; }
+    .repo-link, .repo-stats, .pr-link, .metric-item, .pr-status { display: inline-flex; align-items: center; gap: .45mm; }
+    .repo-link img, .pr-link img, .metric-item img, .status-icon { width: 3.1mm; height: 3.1mm; object-fit: contain; flex: 0 0 auto; }
+    .gitee-link img { width: 3.1mm; height: 3.1mm; }
+    .repo-link a, .pr-link { color: #008d84; }
+    .repo-stats { color: #344f59; }
+    .metric-group { gap: 3mm; }
+    .pr-label { color: #173543; }
+    .pr-status { color: #008d84; }
+    .package-line { flex-wrap: wrap; }
+    .continuation-header { display: flex; align-items: flex-end; justify-content: space-between; margin: 0 0 4mm; padding: 0 0 3mm; border-bottom: 1px solid #bfcfce; }
+    .continuation-header::after { content: ""; position: absolute; top: 20mm; left: 18mm; width: 39mm; height: 1mm; background: #00a99d; }
+    .continuation-header strong { color: #173543; font-size: 12.5pt; letter-spacing: .025em; }
+    .continuation-header span { color: #78909a; font-size: 8pt; }
+    .evidence-link { color: #008d84; font-size: 8.4pt; }
+    .article-links { font-size: 8.5pt; }
+    .writing-platform-line { justify-content: flex-start; gap: 4mm; }
+    .writing-platform-line .repo-link img { width: 3.1mm; height: 3.1mm; }
+    .resume-footer { position: absolute; right: 10mm; bottom: 5mm; left: 18mm; display: flex; justify-content: space-between; padding-top: 2mm; border-top: 1px solid #bfcfce; color: #6f858d; font-size: 6.8pt; font-weight: 700; letter-spacing: .025em; }
+    @media print {
+      body { background: #f6f4ec; }
+      .sheet { background: #f6f4ec; }
+      a { color: #008d84; }
+    }
+  </style>
+</head>
+<body data-page-mode="paged">
+  <div class="toolbar">
+    <label for="pageMode">页面模式</label>
+    <select id="pageMode" class="page-mode-select" aria-label="选择页面模式">
+      <option value="paged">A4 分页</option>
+      <option value="continuous">A4 长页（不限高度）</option>
+    </select>
+    <span class="toolbar-divider" aria-hidden="true"></span>
+    <button class="tool-button history-button" type="button" data-command="undo" title="撤回编辑" aria-label="撤回编辑">撤回</button>
+    <button class="tool-button history-button" type="button" data-command="redo" title="前进编辑" aria-label="前进编辑">前进</button>
+    <label for="fontFamily">字体</label>
+    <select class="format-select" id="fontFamily" title="字体" aria-label="字体">
+      <option value="simhei">黑体</option>
+      <option value="yahei">微软雅黑</option>
+      <option value="simsun">宋体</option>
+      <option value="times">Times New Roman</option>
+      <option value="arial">Arial</option>
+    </select>
+    <label for="fontSize">字号</label>
+    <select class="format-select font-size" id="fontSize" title="字号" aria-label="字号">
+      <option value="10px">10</option>
+      <option value="11px" selected>11</option>
+      <option value="12px">12</option>
+      <option value="14px">14</option>
+      <option value="16px">16</option>
+      <option value="18px">18</option>
+      <option value="22px">22</option>
+      <option value="26px">26</option>
+    </select>
+    <label class="color-control" title="文字颜色"><span>颜色</span><input id="textColor" type="color" value="#151515" aria-label="文字颜色"></label>
+    <button class="tool-button" type="button" data-command="bold" title="加粗"><strong>B</strong></button>
+    <span id="saveStatus" class="save-status" role="status" aria-live="polite">自动保存已开启</span>
+    <button class="print-button" type="button" onclick="window.print()">打印 / 导出 PDF</button>
+  </div>
+
+  <main class="sheet" contenteditable="true">
+    <header class="header-grid">
+      <div>
+        <div class="identity-line">
+          <h1>潘锐琦</h1>
+          <div class="education-inline"><img src="asu-assets/icons/graduation-cap.svg" alt="教育">暨南大学 · 软件工程（本科）</div>
+          <div class="education-dates">2019.09 — 2023.06</div>
+        </div>
+        <div class="target-row"><span class="target-label">求职意向：</span><strong>Android开发工程师 · 性能稳定性 / 构建工程化 / Native音视频</strong></div>
+        <div class="contact-row">
+          <span class="contact-item"><img src="asu-assets/icons/phone.svg" alt="电话"><a href="tel:19212064006">19212064006</a></span>
+          <span class="contact-item"><img src="asu-assets/icons/envelope.svg" alt="邮箱"><a href="mailto:qq934137388@gmail.com">qq934137388@gmail.com</a></span>
+          <span class="contact-item"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/jjjjjjava"><strong>github.com/jjjjjjava</strong></a></span>
+          <span class="contact-item"><strong>2年+开发经验</strong></span>
+        </div>
+        <div class="header-rule" aria-hidden="true"></div>
+      </div>
+      <div class="profile-photo-slot has-photo" contenteditable="false" role="button" tabindex="0" aria-label="选择或替换证件照">
+        <img class="profile-photo" src="asu-assets/profile.jpg" alt="潘锐琦证件照">
+        <input class="photo-input" type="file" accept="image/*" aria-label="选择证件照">
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title" data-index="01" data-en="EXPERTISE"><img class="section-icon" src="asu-assets/icons/code.svg" alt="">专业技能</h2>
+      <div class="skills-panel">
+        <div class="skill-label">核心强项</div><div class="skill-value">Android启动与首屏链路 · 性能归因与稳定性治理 · FFmpeg音视频链路</div>
+        <div class="skill-label">熟练使用</div><div class="skill-value">Kotlin / Java · Perfetto / Systrace · CPU Profiler · Bugly ANR Trace · C/C++</div>
+        <div class="skill-label">工程接触</div><div class="skill-value">Gradle / AGP · Artifacts API · ASM / APT · ArkTS / AKI · Flutter / MethodChannel</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title" data-index="02" data-en="EXPERIENCE"><img class="section-icon" src="asu-assets/icons/briefcase.svg" alt="">工作经历</h2>
+      <div class="company"><img class="company-brand wandianzhang" src="asu-assets/logos/wandianzhang.webp" alt="万店掌"><div class="company-name">万店掌 · Android开发工程师 <span class="company-focus">｜启动性能 · 稳定性 · 音视频与跨端</span></div><div class="company-meta">2025.04 — 至今</div></div>
+
+      <article class="project">
+        <div class="project-head"><div class="project-title">首页冷启动性能治理 <span class="project-context">｜Benchmark → Perfetto → Rollout</span></div><div class="project-proof">P90 4.6s → 3.1s</div></div>
+        <ul>
+          <li><strong>背景与结果：</strong>季度存量治理专项，线上P50约1.8s、P90约4.6s；小米8受控Benchmark由<strong>2.98s降至1.74s</strong>，线上P50降至<strong>1.5s</strong>、P90降至<strong>3.1s</strong>。</li>
+          <li><strong>我的职责：</strong>专项技术主责，负责线上收敛、实验设计、Trace/源码归因、方案落地、回归修复与灰度验证。</li>
+          <li class="nested"><strong>证据归因：</strong>从<span class="code">home_build</span>下钻，定位启动区间<span class="code">inflate 106次</span>、<span class="code">RV OnLayout 29次</span>及WebView约230ms；源码确认ViewPager2全量预加载与静态WebView提前执行非首屏工作。</li>
+          <li class="nested"><strong>关键路径裁剪：</strong>恢复ViewPager2懒加载、WebView按需创建；以分阶段缓存修复门店页白屏，以状态快照+replay修复Fragment延迟创建导致的入口状态丢失。</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="project-head"><div class="project-title">ARouter启动增量劣化治理 <span class="project-context">｜AGP 8 · Artifacts API · ASM</span></div><div class="project-proof">7.84s → &lt;100ms</div></div>
+        <ul>
+          <li><strong>背景与结果：</strong>候选版本LOW档P90由约4.5s升至12.8s；修复后本地ARouter初始化由<strong>7.84s降至100ms内</strong>，线上P90恢复约4.5s，消除新增约8.3s劣化。</li>
+          <li><strong>我的职责：</strong>负责专项全流程：线下复现、根因定位、方案设计与代码落地、真实Release Variant验证、工程沉淀及上游PR提交。</li>
+          <li class="nested"><strong>故障链定位：</strong>沿Stage/Task和CPU Profiler定位<span class="code">openDexFileNative</span>聚合约7.6s；确认AGP升级使注册插件失效，运行时回退全量Dex扫描。</li>
+          <li class="nested"><strong>构建链修复：</strong>接入Artifacts API插件并用ASM向<span class="code">loadRouterMap()</span>注入注册；继续定位复杂Variant未执行插桩，并完成ASM 9.7/Java 21兼容与上游PR合入。</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="project-head"><div class="project-title">线上ANR专项治理 <span class="project-context">｜Clustering · Trace · Thread Dependency</span></div><div class="project-proof">ANR率 2.8% → 0.9%</div></div>
+        <ul>
+          <li><strong>背景与结果：</strong>基于线上监控对近90天ANR数据开展专项治理，按版本、机型和堆栈特征完成问题聚类与优先级收敛，治理后<strong>ANR率由2.8%降至0.9%</strong>。</li>
+          <li><strong>我的职责：</strong>负责ANR样本切片与聚类、代表Trace筛选、主线程阻塞与线程依赖关系还原、治理方案设计、回归验证及灰度监控。</li>
+          <li class="nested"><strong>归因方法：</strong>从主线程耗时IO、锁竞争与死锁、资源释放阻塞等共性模式入手，结合线程状态、持锁关系和生命周期还原阻塞链路。</li>
+          <li class="nested"><strong>治理策略：</strong>通过耗时任务异步迁移、缩短锁范围或升级依赖、资源释放与生命周期解耦等方式降低主线程阻塞风险。</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="project-head"><div class="project-title">OpenHarmony视频巡店整改 <span class="project-context">｜FFmpeg · ArkTS/AKI · Native Pipeline</span></div><div class="project-proof">150s → 27s</div></div>
+        <ul>
+          <li><strong>背景与结果：</strong>鸿蒙版本因Native媒体能力缺失被下架；补齐录像下载、视频水印并支撑重新上架，后续将两分钟水印耗时由<strong>150s降至27s</strong>。</li>
+          <li><strong>我的职责：</strong>负责方案设计、FFmpeg移植与源码改造、功能开发、性能优化、验证及组件发布。</li>
+          <li class="nested"><strong>FFmpeg双链路：</strong>录像下载使用FFmpeg读取RTSP、解复用H.264/AAC、stream copy并封装MP4；水印使用解码、<span class="code">overlay</span>、<span class="code">h264_ohosavcodec</span>重新编码和封装。</li>
+          <li class="nested"><strong>App集成与硬编：</strong>以<span class="code">setjmp/longjmp</span>把fftools进程级<span class="code">exit()</span>改成命令返回，通过AKI/NAPI回传进度与结果；补齐平台codec构建适配，使任务进入硬件编码链。</li>
+        </ul>
+      </article>
+
+    </section>
+    <footer class="resume-footer"><span>PAN RUIQI · ANDROID ENGINEER</span><span>01</span></footer>
+  </main>
+
+  <main class="sheet page-break" contenteditable="true">
+    <header class="continuation-header"><strong>EXPERIENCE &amp; OPEN SOURCE</strong><span>潘锐琦 · Android开发工程师</span></header>
+    <section class="section">
+      <h2 class="section-title" data-index="02" data-en="EXPERIENCE"><img class="section-icon" src="asu-assets/icons/briefcase.svg" alt="">工作经历（续）</h2>
+      <div class="company"><img class="company-brand acoinfo" src="asu-assets/logos/acoinfo.svg" alt="翼辉信息"><div class="company-name">翼辉信息 · 内核开发工程师 <span class="company-focus">｜嵌入式系统与底层问题定位</span></div><div class="company-meta">2023.05 — 2024.06</div></div>
+      <article class="project compact"><ul><li><strong>工作内容：</strong>参与嵌入式系统内核维护，涉及设备树、系统启动流程和底层日志分析，曾定位并修复设备树挂载异常；参与爱智App部分UI及基础交互开发。</li></ul></article>
+    </section>
+
+    <section class="section open-source-section">
+      <h2 class="section-title" data-index="03" data-en="OPEN SOURCE"><img class="section-icon" src="asu-assets/logos/github.svg" alt="">开源贡献</h2>
+
+      <article class="project">
+        <div class="project-title">DeepTutor <span class="project-context">· Agent-native个性化学习平台</span></div>
+        <div class="repo-block">
+          <div class="repo-line">
+            <span class="repo-link"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/HKUDS/DeepTutor">github.com/HKUDS/DeepTutor</a></span>
+            <span class="repo-stats metric-group"><span class="metric-item"><img src="asu-assets/icons/star-gold.svg" alt="Stars">35.7k Stars</span><span class="metric-item"><img src="asu-assets/icons/git-fork.svg" alt="Forks">Forks 4.5k</span></span>
+          </div>
+          <div class="pr-line"><span class="pr-label">PR 链接：</span><a class="pr-link" href="https://github.com/HKUDS/DeepTutor/pull/826"><img src="asu-assets/icons/git-pull-request.svg" alt="Pull Request">PR #826</a><span>·</span><span class="pr-status">Maintainer Validated</span><span>｜</span><a class="pr-link" href="https://github.com/HKUDS/DeepTutor/pull/829"><img src="asu-assets/icons/git-pull-request.svg" alt="Pull Request">PR #829</a><span>·</span><span class="pr-status"><img class="status-icon" src="asu-assets/icons/merged.svg" alt="Merged">已合入</span></div>
+        </div>
+        <ul>
+          <li><strong>缺陷定位（PR #826）：</strong>定位Responses工具参数在仅携带<span class="code">item_id</span>的事件中无法关联，以及Markdown fenced code内合法JSON被错误剥离，导致工具参数退化为空对象；诊断获维护者确认。</li>
+          <li><strong>修复合入（PR #829）：</strong>继续定位Raw SSE/SDK双链路的失败事件传播缺失，补齐<span class="code">response.failed</span>、顶层<span class="code">error</span>抛出与嵌套<span class="code">response.error</span>提取；增加<span class="code">item_id-only delta</span>回归覆盖，43项测试及Ruff、format、diff校验通过，最终获维护者合入。</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="project-title">ArouterGradlePlugin <span class="project-context">· AGP 8编译期路由注册插件</span></div>
+        <div class="repo-block">
+          <div class="repo-line">
+            <span class="repo-link"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/JailedBird/ArouterGradlePlugin">github.com/JailedBird/ArouterGradlePlugin</a></span>
+            <span class="repo-stats metric-group"><span class="metric-item"><img src="asu-assets/icons/star-gold.svg" alt="Stars">119 Stars</span><span class="metric-item"><img src="asu-assets/icons/git-fork.svg" alt="Forks">Forks 23</span></span>
+          </div>
+          <div class="pr-line"><span class="pr-label">PR 链接：</span><a class="pr-link" href="https://github.com/JailedBird/ArouterGradlePlugin/pull/16"><img src="asu-assets/icons/git-pull-request.svg" alt="Pull Request">PR #16</a><span>·</span><a class="pr-link" href="https://github.com/JailedBird/ArouterGradlePlugin/pull/19"><img src="asu-assets/icons/git-pull-request.svg" alt="Pull Request">PR #19</a><span>·</span><span class="pr-status"><img class="status-icon" src="asu-assets/icons/merged.svg" alt="Merged">均已合入</span></div>
+        </div>
+        <ul>
+          <li><strong>修复合入：</strong>升级ASM 9.7解决Java 21 major version 65解析失败；修复精确匹配<span class="code">debug</span>导致复杂Variant配置失效，2项PR均获维护者合入。</li>
+          <li><strong>业务沉淀：</strong>发布可直接接入的<a href="https://jitpack.io/#jjjjjjava/ArouterGradlePlugin">自维护JitPack版本</a>并用于实际业务构建。</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="project-title">OpenHarmony-TPC FFmpeg <span class="project-context">· OpenHarmony FFmpeg移植仓</span></div>
+        <div class="repo-block">
+          <div class="repo-line"><span class="repo-link gitee-link"><img src="asu-assets/logos/gitee-mark.ico" alt="Gitee"><a href="https://gitee.com/openharmony-tpc-incubate/FFmpeg">gitee.com/openharmony-tpc-incubate/FFmpeg</a></span><span class="repo-stats"><span class="metric-item"><img src="asu-assets/icons/contributors.svg" alt="Contributors">贡献者 2459</span></span></div>
+          <div class="pr-line"><span class="pr-label">PR 链接：</span><a class="pr-link" href="https://gitee.com/openharmony-tpc-incubate/FFmpeg/pulls/49"><img src="asu-assets/icons/git-pull-request.svg" alt="Pull Request">PR #49</a><span>·</span><span class="pr-status"><img class="status-icon" src="asu-assets/icons/merged.svg" alt="Merged">已合入</span></div>
+        </div>
+        <ul>
+          <li><strong>缺陷定位：</strong><span class="code">format_-&gt;bit_rate</span>已获得目标值，但<span class="code">SetCodecFormat()</span>未写入<span class="code">OH_AVFormat</span>，导致硬件编码器使用默认码率。</li>
+          <li><strong>修复合入：</strong>补充<span class="code">OH_MD_KEY_BITRATE</span>传递并完成多组码率验证，修复于2026年3月合入上游。</li>
+        </ul>
+      </article>
+
+      <article class="project">
+        <div class="project-title">ffmpeg_tools <span class="project-context">· 个人开源项目（作者 / Maintainer）</span></div>
+        <div class="repo-block">
+          <div class="repo-line">
+            <span class="repo-link"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/jjjjjjava/ffmpeg_tools">github.com/jjjjjjava/ffmpeg_tools</a></span>
+            <span class="repo-stats metric-group"><span class="metric-item"><img src="asu-assets/icons/download.svg" alt="Downloads">累计下载/使用量 600+</span><span class="metric-item"><img src="asu-assets/icons/popularity-flame.svg" alt="Popularity">当前使用量 205 次</span></span>
+          </div>
+          <div class="pr-line package-line"><span class="pr-label">包地址：</span><a class="pr-link" href="https://ohpm.openharmony.cn/#/cn/detail/@prq%2Fffmpeg-tools"><img src="asu-assets/icons/package.svg" alt="OHPM Package">OHPM @prq/ffmpeg-tools</a><span>·</span><span class="metric-item"><img src="asu-assets/icons/package.svg" alt="Package">GitHub / OHPM 双端发布</span></div>
+        </div>
+        <ul>
+          <li><strong>项目职责：</strong>本人创建并持续维护，独立负责核心能力设计、ArkTS/Native实现、发布与版本维护；支持转码、RTSP录像下载、视频水印、进度/结果回调及OpenHarmony硬件编解码。</li>
+          <li><strong>维护闭环：</strong>负责问题复现、参数链追踪、源码修复、GitHub/OHPM双端发布与上游协作。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title" data-index="04" data-en="TECHNICAL WRITING"><img class="section-icon" src="asu-assets/icons/article.svg" alt="">技术输出</h2>
+      <article class="project">
+        <div class="project-head"><div class="project-title">Android · JVM · OpenHarmony技术写作</div><div class="project-proof">原创29篇 · 累计阅读10,000+</div></div>
+        <div class="repo-block writing-block">
+          <div class="repo-line writing-platform-line">
+            <span class="repo-link"><img src="asu-assets/logos/csdn.ico" alt="CSDN"><a href="https://blog.csdn.net/qq_35829566">CSDN：blog.csdn.net/qq_35829566</a></span>
+            <span class="repo-link"><img src="asu-assets/logos/juejin.png" alt="掘金"><a href="https://juejin.cn/user/499639464759898">掘金：juejin.cn/user/499639464759898</a></span>
+          </div>
+        </div>
+        <ul class="article-links">
+          <li><strong>OpenHarmony / FFmpeg：</strong><a href="https://blog.csdn.net/qq_35829566/article/details/155782443">在鸿蒙中调用 FFmpeg 命令行工具</a> · <a href="https://blog.csdn.net/qq_35829566/article/details/155781896">鸿蒙下 FFmpeg 编译流程梳理</a></li>
+          <li><strong>Android Framework：</strong><a href="https://blog.csdn.net/qq_35829566/article/details/146032754">View 工作原理</a> · <a href="https://blog.csdn.net/qq_35829566/article/details/146032813">Binder 机制</a> · <a href="https://blog.csdn.net/qq_35829566/article/details/146070208">消息机制介绍</a></li>
+          <li><strong>JVM：</strong><a href="https://blog.csdn.net/qq_35829566/article/details/146070848">JVM 内存模型</a></li>
+          <li><strong>WebView / Hybrid：</strong><a href="https://blog.csdn.net/qq_35829566/article/details/149206871">WebView 原理与实践</a> · <a href="https://blog.csdn.net/qq_35829566/article/details/149180576">JSBridge 机制</a></li>
+        </ul>
+      </article>
+    </section>
+    <footer class="resume-footer"><span>PAN RUIQI · ANDROID ENGINEER</span><span>02</span></footer>
+  </main>
+  <script>
+    (() => {
+      const pageMode = document.querySelector('#pageMode');
+      const modeStorageKey = 'asu-resume-page-mode';
+      const contentStoragePrefix = 'panruiqi-asu-resume-v1';
+      const sheets = Array.from(document.querySelectorAll('main.sheet[contenteditable="true"]'));
+      const saveStatus = document.querySelector('#saveStatus');
+      let saveTimer = null;
+
+      const setSaveStatus = (text) => {
+        if (saveStatus) saveStatus.textContent = text;
+      };
+      const getStoredValue = (key) => {
+        try {
+          return localStorage.getItem(key);
+        } catch (error) {
+          return null;
+        }
+      };
+      const setStoredValue = (key, value) => {
+        try {
+          localStorage.setItem(key, value);
+          return true;
+        } catch (error) {
+          setSaveStatus('自动保存不可用');
+          return false;
+        }
+      };
+      const hashText = (text) => {
+        let hash = 2166136261;
+        for (let index = 0; index < text.length; index += 1) {
+          hash ^= text.charCodeAt(index);
+          hash = Math.imul(hash, 16777619);
+        }
+        return (hash >>> 0).toString(16);
+      };
+      const contentStorageKey = `${contentStoragePrefix}-${hashText(window.location.href)}`;
+      const templateHash = hashText(JSON.stringify(sheets.map((sheet) => sheet.innerHTML)));
+      const restoreSavedContent = () => {
+        const raw = getStoredValue(contentStorageKey);
+        if (!raw) return;
+        try {
+          const saved = JSON.parse(raw);
+          if (saved.templateHash !== templateHash || !Array.isArray(saved.sheets) || saved.sheets.length !== sheets.length) {
+            setSaveStatus('模板已更新，未恢复旧内容');
+            return;
+          }
+          sheets.forEach((sheet, index) => {
+            if (typeof saved.sheets[index] === 'string') sheet.innerHTML = saved.sheets[index];
+          });
+          setSaveStatus('已恢复上次编辑');
+        } catch (error) {
+          setSaveStatus('自动保存已开启');
+        }
+      };
+      const saveContent = () => {
+        if (!sheets.length) return;
+        const saved = setStoredValue(contentStorageKey, JSON.stringify({
+          version: 2,
+          templateHash,
+          sheets: sheets.map((sheet) => sheet.innerHTML),
+          savedAt: new Date().toISOString()
+        }));
+        if (saved) setSaveStatus('已自动保存');
+      };
+      const scheduleSave = () => {
+        setSaveStatus('保存中...');
+        window.clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(saveContent, 350);
+      };
+
+      restoreSavedContent();
+      sheets.forEach((sheet) => sheet.addEventListener('input', scheduleSave));
+      window.addEventListener('beforeunload', saveContent);
+
+      const photoSlot = document.querySelector('.profile-photo-slot');
+      const photoInput = photoSlot?.querySelector('.photo-input');
+      const openPhotoPicker = () => photoInput?.click();
+      photoSlot?.addEventListener('click', (event) => {
+        if (event.target !== photoInput) openPhotoPicker();
+      });
+      photoSlot?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openPhotoPicker();
+        }
+      });
+      photoInput?.addEventListener('change', (event) => {
+        const [file] = event.target.files || [];
+        if (!file || !file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+          let photo = photoSlot.querySelector('.profile-photo');
+          if (!photo) {
+            photo = document.createElement('img');
+            photo.className = 'profile-photo';
+            photo.alt = '证件照';
+            photoSlot.prepend(photo);
+          }
+          photo.src = reader.result;
+          photoSlot.querySelector('.photo-placeholder')?.remove();
+          photoSlot.classList.add('has-photo');
+          scheduleSave();
+        });
+        reader.readAsDataURL(file);
+      });
+
+      const applyMode = (mode) => {
+        document.body.dataset.pageMode = mode;
+        pageMode.value = mode;
+      };
+      applyMode(getStoredValue(modeStorageKey) || 'paged');
+      pageMode.addEventListener('change', () => {
+        applyMode(pageMode.value);
+        setStoredValue(modeStorageKey, pageMode.value);
+      });
+
+      const editorSelector = '[contenteditable="true"]';
+      const getElement = (node) => node && (node.nodeType === 1 ? node : node.parentElement);
+      const isEditorSelection = (node) => {
+        const element = getElement(node);
+        return Boolean(element && element.closest(editorSelector) && !element.closest('.toolbar'));
+      };
+      let savedRange = null;
+      document.addEventListener('selectionchange', () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount && isEditorSelection(selection.anchorNode) && isEditorSelection(selection.focusNode)) {
+          savedRange = selection.getRangeAt(0).cloneRange();
+        }
+      });
+
+      const restoreSelection = () => {
+        if (!savedRange) return false;
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(savedRange);
+        return true;
+      };
+      const runCommand = (command, value = null) => {
+        if (!restoreSelection()) return;
+        document.execCommand(command, false, value);
+        scheduleSave();
+      };
+
+      document.querySelectorAll('.tool-button[data-command]').forEach((button) => {
+        button.addEventListener('mousedown', (event) => event.preventDefault());
+        button.addEventListener('click', () => runCommand(button.dataset.command));
+      });
+
+      const fontFamilies = {
+        simhei: 'SimHei, 黑体, Microsoft YaHei, sans-serif',
+        yahei: 'Microsoft YaHei, sans-serif',
+        simsun: 'SimSun, 宋体, serif',
+        times: 'Times New Roman, serif',
+        arial: 'Arial, sans-serif'
+      };
+      document.querySelector('#fontFamily').addEventListener('change', (event) => {
+        runCommand('fontName', fontFamilies[event.target.value]);
+      });
+
+      const applyInlineStyle = (property, value) => {
+        if (!restoreSelection()) return;
+        const selection = window.getSelection();
+        if (!selection.rangeCount || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        const wrapper = document.createElement('span');
+        wrapper.style[property] = value;
+        wrapper.appendChild(range.extractContents());
+        range.insertNode(wrapper);
+        const newRange = document.createRange();
+        newRange.selectNodeContents(wrapper);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+        savedRange = newRange.cloneRange();
+        scheduleSave();
+      };
+      document.querySelector('#fontSize').addEventListener('change', (event) => {
+        applyInlineStyle('fontSize', event.target.value);
+      });
+      document.querySelector('#textColor').addEventListener('input', (event) => {
+        runCommand('foreColor', event.target.value);
+      });
+    })();
+  </script>
+</body>
+</html>

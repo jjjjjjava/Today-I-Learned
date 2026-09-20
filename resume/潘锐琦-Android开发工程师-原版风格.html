@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>潘锐琦 - Android开发工程师 - 原版风格</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    :root {
+      --paper: #f6f4ec;
+      --paper-soft: #fbfaf5;
+      --teal: #00a99d;
+      --teal-dark: #008d84;
+      --ink: #173543;
+      --body: #48606b;
+      --muted: #78909a;
+      --line: #bfcfce;
+      --hero: #e7efec;
+      --project: rgba(255, 255, 255, .58);
+      --gold: #e3b341;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      color: var(--body);
+      background: #e9e8e3;
+      font-family: "Century Gothic", "Avenir Next", "Microsoft YaHei", "PingFang SC", sans-serif;
+      font-size: 9.55pt;
+      line-height: 1.34;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: var(--teal-dark); text-decoration-thickness: .7px; text-underline-offset: 1.5px; }
+    a:hover { color: #006f69; text-decoration-thickness: 1.2px; }
+    a:focus-visible, button:focus-visible, select:focus-visible, [contenteditable="true"]:focus-visible { outline: 2px solid rgba(0, 169, 157, .42); outline-offset: 2px; }
+    ::selection { background: rgba(0, 169, 157, .17); }
+
+    .toolbar {
+      position: sticky; z-index: 20; top: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+      width: max-content; max-width: calc(100vw - 24px); margin: 6px auto 8px; padding: 7px 10px;
+      border: 1px solid #cbd5d2; border-radius: 7px; background: rgba(255, 255, 255, .97);
+      box-shadow: 0 5px 18px rgba(23, 53, 67, .14); color: #344b55; font: 12px/1 Arial, "Microsoft YaHei", sans-serif;
+    }
+    .toolbar label { font-weight: 700; white-space: nowrap; }
+    .toolbar button, .toolbar select { height: 30px; border: 1px solid #cbd5d2; border-radius: 4px; background: #fff; color: #344b55; font: inherit; }
+    .toolbar button { padding: 0 9px; cursor: pointer; font-weight: 700; }
+    .toolbar button:hover { border-color: var(--teal); color: var(--teal-dark); }
+    .toolbar select { padding: 0 6px; }
+    .toolbar .print-button { border-color: var(--teal); background: var(--teal); color: #fff; }
+    .toolbar .print-button:hover { background: var(--teal-dark); color: #fff; }
+    .toolbar input[type="color"] { width: 28px; height: 28px; padding: 2px; border: 1px solid #cbd5d2; border-radius: 4px; background: #fff; }
+    .save-status { color: #71858d; white-space: nowrap; }
+
+    .sheet {
+      position: relative; width: 210mm; height: 297mm; min-height: 297mm; margin: 0 auto 12mm;
+      padding: 12mm 11mm 14mm 24mm; overflow: hidden; background: var(--paper); box-shadow: 0 3px 20px rgba(23, 53, 67, .15);
+    }
+    .sheet::before { content: ""; position: absolute; top: 15mm; bottom: 15mm; left: 18mm; width: 1px; background: #d1dad7; }
+    .page-break { break-before: page; page-break-before: always; }
+    body[data-page-mode="continuous"] { background: var(--paper); }
+    body[data-page-mode="continuous"] .sheet { height: auto; min-height: 0; margin-bottom: 0; overflow: visible; box-shadow: none; }
+
+    .hero {
+      position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 27mm; gap: 9mm; min-height: 55mm;
+      margin: 2mm 0 9mm; padding: 7mm 8mm 6mm; border-left: 2mm solid var(--teal); border-radius: 0 5mm 5mm 0; background: var(--hero);
+    }
+    .hero::after { content: ""; position: absolute; right: 2mm; top: 9mm; bottom: 5mm; width: 1.7mm; background: var(--teal); }
+    .hero-eyebrow { margin-bottom: 5mm; color: var(--teal); font-size: 8.5pt; font-weight: 800; letter-spacing: .035em; }
+    h1 { margin: 0; color: var(--ink); font-size: 25pt; line-height: 1; font-weight: 800; letter-spacing: .025em; }
+    .hero-role { margin-top: 4mm; color: #314d58; font-size: 12pt; font-weight: 600; }
+    .hero-contact { display: flex; flex-wrap: wrap; gap: 3px 10px; margin-top: 6mm; color: var(--muted); font-size: 8.4pt; }
+    .hero-contact a { text-decoration: none; }
+    .hero-contact .full { flex-basis: 100%; }
+    .profile-photo-slot {
+      position: relative; z-index: 1; align-self: center; width: 25mm; height: 34mm; overflow: hidden;
+      border: 1.2mm solid #fff; background: #fff; box-shadow: 2mm 2mm 0 var(--teal); cursor: pointer;
+    }
+    .profile-photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-photo-slot::after { content: "点击替换"; position: absolute; right: 0; bottom: 0; left: 0; padding: 3px; background: rgba(0, 141, 132, .88); color: #fff; text-align: center; font-size: 7pt; opacity: 0; }
+    .profile-photo-slot:hover::after { opacity: 1; }
+    .photo-input { display: none; }
+
+    .numbered-section { margin: 0 0 5mm; }
+    .section-heading { display: flex; align-items: stretch; min-height: 13mm; border-bottom: 1px solid var(--line); }
+    .section-number { display: flex; align-items: center; justify-content: center; width: 12mm; margin-right: 4mm; background: var(--teal); color: #fff; font-size: 8.5pt; font-weight: 800; }
+    .section-name { align-self: center; padding-bottom: 1mm; }
+    .section-name small { display: block; color: var(--teal); font-size: 7.6pt; line-height: 1; font-weight: 800; letter-spacing: .025em; }
+    .section-name h2 { margin: 1mm 0 0; color: var(--ink); font-size: 15pt; line-height: 1; font-weight: 700; }
+
+    ul { margin: 1.5mm 0 0 5mm; padding: 0; }
+    li { margin: .8mm 0; padding-left: 1mm; }
+    li::marker { color: var(--teal); font-size: .72em; }
+    li strong { color: #294652; }
+    .dense-list { margin-top: 1mm; }
+    .dense-list li { margin: .55mm 0; }
+
+    .company-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; margin-top: 2mm; color: var(--ink); font-size: 11pt; font-weight: 700; }
+    .company-row time { color: var(--muted); font-size: 8.8pt; font-weight: 500; white-space: nowrap; }
+    .company-summary { margin-bottom: 3mm; }
+
+    .page-header { display: flex; align-items: flex-end; justify-content: space-between; margin: 0 0 6mm; padding-bottom: 3mm; border-bottom: 1px solid var(--line); }
+    .page-header::after { content: ""; position: absolute; top: 25mm; left: 24mm; width: 41mm; height: 1mm; background: var(--teal); }
+    .page-header strong { color: var(--ink); font-size: 13pt; letter-spacing: .025em; }
+    .page-header span { color: var(--muted); font-size: 8.3pt; }
+
+    .project-card { margin: 2.4mm 0 4mm; }
+    .project-bar { padding: 2mm 3mm 1.6mm; border-left: 2mm solid var(--teal); background: var(--project); }
+    .project-bar h3 { margin: 0; color: var(--ink); font-size: 11.4pt; line-height: 1.12; font-weight: 700; }
+    .project-bar .stack { margin-top: .7mm; color: var(--muted); font-size: 8.5pt; line-height: 1.1; }
+    .project-card ul { margin-top: 1mm; }
+    .project-card li { margin: .7mm 0; }
+    .code { padding: 0 2px; border-radius: 2px; background: rgba(23, 53, 67, .07); font-family: Consolas, "Cascadia Mono", monospace; font-size: .9em; }
+
+    .open-source-section .project-card { margin-bottom: 3.5mm; }
+    .repo-meta { margin: 1.1mm 0 1mm 3mm; font-size: 8.7pt; }
+    .repo-line, .pr-line { display: flex; align-items: center; flex-wrap: wrap; gap: 1.5mm; min-height: 4mm; }
+    .repo-line { justify-content: space-between; }
+    .repo-link, .repo-stats, .pr-link { display: inline-flex; align-items: center; gap: 1.2mm; }
+    .repo-link img, .pr-link img { width: 3.2mm; height: 3.2mm; object-fit: contain; }
+    .repo-stats img { width: 3.4mm; height: 3.4mm; object-fit: contain; }
+    .repo-link a, .pr-link { color: var(--teal-dark); font-weight: 700; }
+    .repo-stats { color: #344f59; font-weight: 700; }
+    .pr-label { color: var(--ink); font-weight: 800; }
+    .pr-status { color: var(--teal-dark); font-weight: 800; }
+    .link-icon { width: 3.2mm; height: 3.2mm; }
+
+    .writing-summary { margin-top: 2mm; }
+    .writing-links { margin-top: 1.5mm; color: var(--muted); }
+    .education-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8mm; margin-top: 0; padding: 4mm; background: var(--hero); color: var(--body); }
+    .education-row strong { color: var(--ink); }
+    .education-row time { color: var(--muted); white-space: nowrap; }
+
+    .page-footer { position: absolute; right: 11mm; bottom: 6mm; left: 24mm; display: flex; justify-content: space-between; padding-top: 3mm; border-top: 1px solid var(--line); color: #6f858d; font-size: 7pt; font-weight: 700; letter-spacing: .025em; }
+    .sheet:first-of-type .hero { min-height: 53mm; margin-bottom: 7mm; }
+    .sheet:first-of-type .numbered-section { margin-bottom: 4mm; }
+    .sheet:first-of-type .dense-list li { margin: .45mm 0; }
+
+    @media screen and (max-width: 860px) {
+      .toolbar { justify-content: center; }
+      .sheet { transform-origin: top center; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+    @media print {
+      body { background: var(--paper); }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; }
+      a { color: var(--teal-dark); }
+    }
+  </style>
+</head>
+<body data-page-mode="paged">
+  <div class="toolbar" contenteditable="false">
+    <label for="pageMode">页面</label>
+    <select id="pageMode"><option value="paged">A4 分页</option><option value="continuous">A4 长页</option></select>
+    <button type="button" data-command="undo">撤回</button>
+    <button type="button" data-command="redo">前进</button>
+    <label for="fontFamily">字体</label>
+    <select id="fontFamily"><option value="Microsoft YaHei">微软雅黑</option><option value="SimHei">黑体</option><option value="SimSun">宋体</option><option value="Arial">Arial</option></select>
+    <label for="fontSize">字号</label>
+    <select id="fontSize"><option value="10px">10</option><option value="11px" selected>11</option><option value="12px">12</option><option value="14px">14</option><option value="16px">16</option><option value="20px">20</option></select>
+    <input id="textColor" type="color" value="#173543" aria-label="文字颜色">
+    <button type="button" data-command="bold">加粗</button>
+    <span id="saveStatus" class="save-status">自动保存已开启</span>
+    <button class="print-button" type="button" onclick="window.print()">打印 / 导出 PDF</button>
+  </div>
+
+  <main class="sheet" contenteditable="true">
+    <header class="hero">
+      <div>
+        <div class="hero-eyebrow">ANDROID · PERFORMANCE · ENGINEERING</div>
+        <h1>潘锐琦</h1>
+        <div class="hero-role">Android开发工程师｜2年+软件开发经验｜性能与稳定性方向</div>
+        <div class="hero-contact">
+          <span><a href="tel:19212064006">19212064006</a></span><span>·</span><span><a href="mailto:qq934137388@gmail.com">qq934137388@gmail.com</a></span>
+          <span class="full"><a href="https://github.com/jjjjjjava">github.com/jjjjjjava</a></span>
+        </div>
+      </div>
+      <div class="profile-photo-slot" contenteditable="false" role="button" tabindex="0" aria-label="替换证件照">
+        <img class="profile-photo" src="asu-assets/profile.jpg" alt="潘锐琦证件照">
+        <input class="photo-input" type="file" accept="image/*">
+      </div>
+    </header>
+
+    <section class="numbered-section">
+      <div class="section-heading"><div class="section-number">01</div><div class="section-name"><small>EXPERTISE</small><h2>专业技能</h2></div></div>
+      <ul class="dense-list">
+        <li><strong>Android与语言：</strong>Kotlin、Java、Activity/Fragment、Handler/Looper/MessageQueue、App冷启动流程。</li>
+        <li><strong>性能与稳定性：</strong>Benchmark、Perfetto/Systrace、CPU Profiler、Bugly ANR Trace；具备启动耗时、主线程IO、锁等待、View创建及ANR调用链分析经验。</li>
+        <li><strong>构建与工程化：</strong>Gradle/AGP、ASM字节码处理、Artifacts API、ARouter编译期注册；处理过AGP 8、Java 21及复杂Variant兼容问题。</li>
+        <li><strong>音视频与Native：</strong>C/C++、FFmpeg、MediaCodec、OpenGL ES、ArkTS/AKI；具备录像下载、转码、水印与硬件编码实践。</li>
+        <li><strong>跨端与发布：</strong>Flutter/Dart、MethodChannel、OpenHarmony；具备GitHub、OHPM及JitPack组件发布经验。</li>
+      </ul>
+    </section>
+
+    <section class="numbered-section">
+      <div class="section-heading"><div class="section-number">02</div><div class="section-name"><small>HIGHLIGHTS</small><h2>核心业绩</h2></div></div>
+      <ul class="dense-list">
+        <li><strong>启动性能治理：</strong>本地冷启动Benchmark由2.98s降至1.74s；线上P50由1.8s降至1.5s、P90由4.6s降至3.1s。</li>
+        <li><strong>ARouter性能治理：</strong>定位AGP升级导致编译期注册失效，本地初始化由7.84s降至100ms内，线上P90恢复约4.5s。</li>
+        <li><strong>线上稳定性治理：</strong>梳理近90天三类Top ANR，覆盖约4.56万条记录、影响用户占比超过12%，修复后退出近期Top列表。</li>
+        <li><strong>OpenHarmony音视频：</strong>补齐FFmpeg录像下载与水印链路，将两分钟水印耗时由150s降至27s，并发布ffmpeg_tools至GitHub/OHPM，累计下载600+。</li>
+        <li><strong>开源与技术输出：</strong>3项外部修复PR获合并；参与DeepTutor 35.7k Stars项目源码协作；原创Android/JVM/OpenHarmony文章29篇，累计阅读10,000+。</li>
+      </ul>
+    </section>
+
+    <section class="numbered-section">
+      <div class="section-heading"><div class="section-number">03</div><div class="section-name"><small>EXPERIENCE</small><h2>工作经历</h2></div></div>
+      <div class="company-summary">
+        <div class="company-row"><span>万店掌｜Android开发工程师</span><time>2025.04 - 至今</time></div>
+        <ul class="dense-list">
+          <li>参与ToB门店数字化产品矩阵开发，负责Android业务需求及启动性能、稳定性、音视频等专项治理，同时承担部分Flutter与OpenHarmony跨端需求。</li>
+          <li>负责App启动性能存量治理，结合线上监控、Benchmark与Perfetto定位首屏链路中的冗余初始化和View创建开销，推动方案落地并跟踪线上效果。</li>
+          <li>负责Gradle/AGP升级后ARouter启动劣化治理，将路由扫描与注册前移至编译期，并完成Java 21与复杂Variant兼容修复。</li>
+          <li>完成OpenHarmony录像下载、视频水印与硬件编码链路建设，将ArkTS与Native音视频处理能力沉淀为可复用工具库。</li>
+        </ul>
+      </div>
+      <div class="company-summary">
+        <div class="company-row"><span>翼辉信息｜内核开发工程师</span><time>2023.05 - 2024.06</time></div>
+        <ul class="dense-list">
+          <li>参与嵌入式系统内核问题定位与维护，涉及设备树、系统启动流程及底层日志分析，曾定位并修复设备树挂载异常。</li>
+          <li>参与爱智App部分UI页面及基础交互开发，为后续Android构建系统、Native层与系统问题定位提供技术基础。</li>
+        </ul>
+      </div>
+    </section>
+    <footer class="page-footer"><span>PAN RUIQI · ANDROID ENGINEER</span><span>01</span></footer>
+  </main>
+
+  <main class="sheet page-break" contenteditable="true">
+    <header class="page-header"><strong>SELECTED WORK</strong><span>潘锐琦 · Android开发工程师</span></header>
+    <section class="numbered-section">
+      <div class="section-heading"><div class="section-number">04</div><div class="section-name"><small>PROJECTS</small><h2>项目经历</h2></div></div>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>App启动性能存量治理</h3><div class="stack">Benchmark / Perfetto / ViewPager2 / WebView</div></div>
+        <ul>
+          <li>基于线上启动监控定位首屏构建阶段耗时，发现ViewPager2全量预加载、静态WebView初始化等非首屏任务占据启动关键路径。</li>
+          <li>选择低端设备进行多轮冷启动Benchmark，通过中位数轮次Perfetto下钻，确认<span class="code">inflate 106次</span>、<span class="code">RV OnLayout 29次</span>及WebView约230ms。</li>
+          <li>恢复ViewPager2懒加载、WebView按需创建；以分阶段缓存修复门店页白屏，以状态快照+replay修复Fragment延迟创建造成的入口状态丢失。</li>
+          <li>本地受控Benchmark由2.98s降至1.74s；线上P50由1.8s降至1.5s，P90由4.6s降至3.1s。</li>
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>ARouter启动增量劣化治理</h3><div class="stack">Android Studio Profiler / Gradle / AGP / ASM / ARouter</div></div>
+        <ul>
+          <li>候选版本低性能设备P90由约4.5s升至12.8s；沿Stage/Task与CPU Profiler定位<span class="code">openDexFileNative</span>聚合耗时约7.6s。</li>
+          <li>确认AGP升级后编译期注册插件失效，启动时回退全量Dex扫描；接入Artifacts API插件并用ASM向<span class="code">loadRouterMap()</span>注入注册。</li>
+          <li>继续定位复杂Variant未执行插桩问题，并完成ASM 9.7、Java 21字节码与Release Variant兼容验证。</li>
+          <li>修复后本地ARouter初始化由7.84s降至100ms内，线上P90恢复约4.5s，消除候选版本新增约8.3s劣化。</li>
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>线上Top ANR专项治理</h3><div class="stack">Bugly / ANR Trace / 生命周期 / 异步存储 / 锁依赖</div></div>
+        <ul>
+          <li>基于Bugly梳理近90天Top ANR，完成数据切片、问题聚类与代表Trace/线程责任链分析，覆盖约4.56万条记录、同期受影响用户占比超过12%。</li>
+          <li>Camera链路将图片压缩、文件IO、媒体库刷新整体迁至IO线程并保留结果顺序；沿持锁链确认极验SDK内部AB-BA死锁后升级处理。</li>
+          <li>IJK链路沿<span class="code">release → pthread_join → AudioTrack.write</span>定位UI线程无界等待；清空旧播放器入口，由后台任务持局部引用执行<span class="code">stop/release</span>。</li>
+          <li>三类问题均完成修复、回归和上线，后续退出近期Top列表。</li>
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>OpenHarmony录像下载与视频加水印</h3><div class="stack">OpenHarmony / ArkTS / AKI / C / C++ / FFmpeg</div></div>
+        <ul>
+          <li>为补齐鸿蒙版本Native媒体能力，基于FFmpeg封装音视频处理工具库，打通ArkTS与Native之间的命令调用、处理进度和结果回调。</li>
+          <li>录像下载使用FFmpeg读取RTSP、解复用H.264/AAC、stream copy并封装MP4；水印链路使用解码、overlay、硬件重新编码与封装。</li>
+          <li>以<span class="code">setjmp/longjmp</span>将fftools进程级<span class="code">exit()</span>改造成命令返回，通过AKI/NAPI回传结果，保障处理任务在App内稳定运行。</li>
+          <li>接入<span class="code">h264_ohosavcodec</span>硬件编码，将业务场景中两分钟视频水印耗时由约150s降至27s。</li>
+        </ul>
+      </article>
+    </section>
+    <footer class="page-footer"><span>PAN RUIQI · ANDROID ENGINEER</span><span>02</span></footer>
+  </main>
+
+  <main class="sheet page-break" contenteditable="true">
+    <header class="page-header"><strong>OPEN SOURCE</strong><span>潘锐琦 · Android开发工程师</span></header>
+    <section class="numbered-section open-source-section">
+      <div class="section-heading"><div class="section-number">05</div><div class="section-name"><small>OPEN SOURCE</small><h2>开源贡献</h2></div></div>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>DeepTutor｜Agent-native个性化学习平台</h3></div>
+        <div class="repo-meta">
+          <div class="repo-line"><span class="repo-link"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/HKUDS/DeepTutor">github.com/HKUDS/DeepTutor</a></span><span class="repo-stats"><img src="asu-assets/icons/star-gold.svg" alt="Stars">当前约35.7k Stars · Forks 4.5k</span></div>
+          <div class="pr-line"><span class="pr-label">PR 链接：</span><a class="pr-link" href="https://github.com/HKUDS/DeepTutor/pull/826"><img src="asu-assets/logos/github.svg" alt="GitHub PR">PR #826</a><span>·</span><span class="pr-status">Maintainer Validated</span></div>
+        </div>
+        <ul>
+          <li>定位Responses工具参数在仅携带<span class="code">item_id</span>事件中无法关联，以及Markdown fenced code内合法JSON被错误剥离，导致参数退化为空对象。</li>
+          <li>修改Raw SSE/SDK缓冲与JSON Parser并补充回归测试；虽因维护者并行修复关闭，但诊断获确认，并帮助发现已合入版本的<span class="code">fc_0</span>缓冲区别名缺陷。</li>
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>ArouterGradlePlugin｜AGP 8编译期路由注册插件</h3></div>
+        <div class="repo-meta">
+          <div class="repo-line"><span class="repo-link"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/JailedBird/ArouterGradlePlugin">github.com/JailedBird/ArouterGradlePlugin</a></span><span class="repo-stats"><img src="asu-assets/icons/star-gold.svg" alt="Stars">当前119 Stars · Forks 23</span></div>
+          <div class="pr-line"><span class="pr-label">PR 链接：</span><a class="pr-link" href="https://github.com/JailedBird/ArouterGradlePlugin/pull/16"><img src="asu-assets/logos/github.svg" alt="GitHub PR">PR #16</a><span>·</span><a class="pr-link" href="https://github.com/JailedBird/ArouterGradlePlugin/pull/19"><img src="asu-assets/logos/github.svg" alt="GitHub PR">PR #19</a><span>·</span><span class="pr-status">均已合入</span></div>
+        </div>
+        <ul>
+          <li>升级ASM 9.7解决Java 21 major version 65解析失败；修复精确匹配<span class="code">debug</span>导致复杂Variant配置失效，2项PR均获维护者合入。</li>
+          <li>发布可直接接入的<a href="https://jitpack.io/#jjjjjjava/ArouterGradlePlugin">自维护JitPack版本</a>并用于实际业务构建。</li>
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>OpenHarmony-TPC FFmpeg｜外部开源贡献</h3></div>
+        <div class="repo-meta">
+          <div class="repo-line"><span class="repo-link"><img src="asu-assets/icons/link.svg" alt="仓库"><a href="https://gitee.com/openharmony-tpc-incubate/FFmpeg">gitee.com/openharmony-tpc-incubate/FFmpeg</a></span></div>
+          <div class="pr-line"><span class="pr-label">PR 链接：</span><a class="pr-link" href="https://gitee.com/openharmony-tpc-incubate/FFmpeg/pulls/49"><img src="asu-assets/icons/link.svg" alt="PR">PR #49</a><span>·</span><span class="pr-status">已合入</span></div>
+        </div>
+        <ul>
+          <li>定位<span class="code">format_-&gt;bit_rate</span>已取得目标值，但<span class="code">SetCodecFormat()</span>未写入<span class="code">OH_AVFormat</span>，导致硬件编码器使用默认码率。</li>
+          <li>补充<span class="code">OH_MD_KEY_BITRATE</span>传递并完成多组码率验证，修复于2026年3月合入上游。</li>
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-bar"><h3>ffmpeg_tools｜OpenHarmony音视频工具库</h3></div>
+        <div class="repo-meta">
+          <div class="repo-line"><span class="repo-link"><img src="asu-assets/logos/github.svg" alt="GitHub"><a href="https://github.com/jjjjjjava/ffmpeg_tools">github.com/jjjjjjava/ffmpeg_tools</a></span><span class="repo-stats">GitHub / OHPM双端发布</span></div>
+          <div class="pr-line"><span class="pr-label">包地址：</span><a class="pr-link" href="https://ohpm.openharmony.cn/#/cn/detail/@prq%2Fffmpeg-tools"><img src="asu-assets/icons/link.svg" alt="OHPM">OHPM @prq/ffmpeg-tools</a><span>·</span><span class="pr-status">累计下载600+</span></div>
+        </div>
+        <ul>
+          <li>封装ArkTS可调用的FFmpeg Native能力，支持转码、RTSP录像下载、视频水印、进度/结果回调及OpenHarmony硬件编解码。</li>
+          <li>完成问题复现、参数链追踪、源码修复、GitHub/OHPM更新与上游PR合入。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="numbered-section">
+      <div class="section-heading"><div class="section-number">06</div><div class="section-name"><small>TECHNICAL WRITING</small><h2>技术输出</h2></div></div>
+      <div class="writing-summary">持续分享Android、JVM及OpenHarmony技术内容，累计发布29篇原创文章，阅读量10,000+。</div>
+      <div class="writing-links">链接：<a href="https://blog.csdn.net/qq_35829566">CSDN</a>｜<a href="https://juejin.cn/user/499639464759898">掘金</a>｜<a href="https://blog.csdn.net/qq_35829566/article/details/155782443">在鸿蒙中调用FFmpeg命令行工具</a>｜<a href="https://blog.csdn.net/qq_35829566/article/details/155781896">鸿蒙下FFmpeg编译流程</a></div>
+    </section>
+
+    <section class="numbered-section">
+      <div class="section-heading"><div class="section-number">07</div><div class="section-name"><small>EDUCATION</small><h2>教育经历</h2></div></div>
+      <div class="education-row"><strong>暨南大学</strong><span>软件工程 · 本科</span><time>2019.09 - 2023.06</time></div>
+    </section>
+    <footer class="page-footer"><span>PAN RUIQI · ANDROID ENGINEER</span><span>03</span></footer>
+  </main>
+
+  <script>
+    (() => {
+      const sheets = [...document.querySelectorAll('.sheet[contenteditable="true"]')];
+      const pageMode = document.querySelector('#pageMode');
+      const saveStatus = document.querySelector('#saveStatus');
+      const source = JSON.stringify(sheets.map((sheet) => sheet.innerHTML));
+      const hash = [...source].reduce((value, char) => Math.imul(value ^ char.charCodeAt(0), 16777619) >>> 0, 2166136261).toString(16);
+      const storageKey = `panruiqi-original-resume-${hash}`;
+      let timer;
+
+      const setStatus = (value) => { if (saveStatus) saveStatus.textContent = value; };
+      const save = () => {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(sheets.map((sheet) => sheet.innerHTML)));
+          setStatus('已自动保存');
+        } catch (_) { setStatus('自动保存不可用'); }
+      };
+      const scheduleSave = () => { setStatus('正在保存…'); clearTimeout(timer); timer = setTimeout(save, 350); };
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+        if (Array.isArray(saved) && saved.length === sheets.length) saved.forEach((html, index) => { if (typeof html === 'string') sheets[index].innerHTML = html; });
+      } catch (_) {}
+      sheets.forEach((sheet) => sheet.addEventListener('input', scheduleSave));
+
+      pageMode.addEventListener('change', () => { document.body.dataset.pageMode = pageMode.value; localStorage.setItem('panruiqi-original-page-mode', pageMode.value); });
+      const savedMode = localStorage.getItem('panruiqi-original-page-mode');
+      if (savedMode === 'continuous' || savedMode === 'paged') { pageMode.value = savedMode; document.body.dataset.pageMode = savedMode; }
+
+      document.querySelectorAll('[data-command]').forEach((button) => button.addEventListener('click', () => { document.execCommand(button.dataset.command); scheduleSave(); }));
+      document.querySelector('#fontFamily').addEventListener('change', (event) => { document.execCommand('fontName', false, event.target.value); scheduleSave(); });
+      document.querySelector('#fontSize').addEventListener('change', (event) => {
+        document.execCommand('fontSize', false, '7');
+        document.querySelectorAll('font[size="7"]').forEach((node) => { node.removeAttribute('size'); node.style.fontSize = event.target.value; });
+        scheduleSave();
+      });
+      document.querySelector('#textColor').addEventListener('input', (event) => { document.execCommand('foreColor', false, event.target.value); scheduleSave(); });
+
+      const photoSlot = document.querySelector('.profile-photo-slot');
+      const photoInput = document.querySelector('.photo-input');
+      const openPhoto = () => photoInput.click();
+      photoSlot.addEventListener('click', openPhoto);
+      photoSlot.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPhoto(); } });
+      photoInput.addEventListener('change', () => {
+        const file = photoInput.files && photoInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => { document.querySelector('.profile-photo').src = reader.result; scheduleSave(); };
+        reader.readAsDataURL(file);
+      });
+    })();
+  </script>
+</body>
+</html>

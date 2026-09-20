@@ -1,0 +1,317 @@
+{
+  "main": {
+    "id": "d74a8f3b8c393c64",
+    "type": "split",
+    "children": [
+      {
+        "id": "e0588da709afa94a",
+        "type": "tabs",
+        "dimension": 68.30484330484332,
+        "children": [
+          {
+            "id": "5334e15f6c8d3fd9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_知识资产/有用.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "有用"
+            }
+          },
+          {
+            "id": "683f795f5521959b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_知识资产/小结部分.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "小结部分"
+            }
+          },
+          {
+            "id": "c2238fb05cc526ba",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_知识资产/工作SOP/Android入职SOP.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Android入职SOP"
+            }
+          },
+          {
+            "id": "33f2e8d01e496e6a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_知识资产/项目/鸿蒙FFmpeg视频处理/04_两分钟水印耗时150秒_硬件编码为何没生效.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "04_两分钟水印耗时150秒_硬件编码为何没生效"
+            }
+          },
+          {
+            "id": "bcf65f7f3632fd38",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03_知识资产/项目/首页启动优化/01_线上目标怎样收敛为线下问题.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01_线上目标怎样收敛为线下问题"
+            }
+          }
+        ],
+        "currentTab": 2
+      },
+      {
+        "id": "c4a7dad87af0ec53",
+        "type": "tabs",
+        "dimension": 31.695156695156694,
+        "children": [
+          {
+            "id": "507e102e8933b0e6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "03_知识资产/工作SOP/Android入职SOP.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b43abd10feed52f9",
+    "type": "split",
+    "children": [
+      {
+        "id": "96925610c5c68c47",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fdceb75c1e7d6089",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "9a4f6f528c724458",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "2246e6ad58ee4986",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f98524147344ba46",
+    "type": "split",
+    "children": [
+      {
+        "id": "25582c019809ade9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b5cd219ca8f34a92",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "03_知识资产/有用.md",
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "有用 的反向链接列表"
+            }
+          },
+          {
+            "id": "8dfbf47b46094056",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "ANR线上治理/03.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "03 的出链列表"
+            }
+          },
+          {
+            "id": "73fb5f2939c005a8",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "a50d85fec937cca9",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "67d371b4139e4cf7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "03_知识资产/有用.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "fdceb75c1e7d6089",
+  "lastOpenFiles": [
+    "需求.md",
+    "03_知识资产/工作SOP/Android入职SOP.md",
+    "03_知识资产/工作SOP",
+    "03_知识资产/工作sop/Android入职SOP.md",
+    "03_知识资产/工作sop",
+    "日神与酒神之间——尼采悲剧美学中的生命肯定.docx",
+    "“无利害”并非冷漠——康德审美判断的自由与公共性.docx",
+    "模仿、真理与城邦秩序——论柏拉图放逐诗人的美学逻辑.docx",
+    "03_知识资产/小结部分.md",
+    "03_知识资产/项目/鸿蒙FFmpeg视频处理/04_两分钟水印耗时150秒_硬件编码为何没生效.md",
+    "western_aesthetics_papers/~$_艺术何以获得正当性_三家比较研究.docx",
+    "未命名.md",
+    "audit_combined_aesthetics_paper.py",
+    "western_aesthetics_papers/combined_style_evidence.json",
+    "western_aesthetics_papers/qa_combined",
+    "western_aesthetics_papers/04_艺术何以获得正当性_三家比较研究.docx",
+    "03_知识资产/项目/ANR线上治理/03_拿到堆栈_怎样追到责任方.md",
+    "03_知识资产/项目/ANR线上治理/01_线上出现一批ANR_先做什么.md",
+    "03_知识资产/项目/ANR线上治理/00_阅读导航.md",
+    "03_知识资产/项目/鸿蒙FFmpeg视频处理/03_ArkTS怎样执行FFmpeg并收到进度.md",
+    "03_知识资产/项目/鸿蒙FFmpeg视频处理/02_fftools命令结束_为什么整个App也退出.md",
+    "03_知识资产/项目/鸿蒙FFmpeg视频处理/01_版本下架后_怎样补齐录像下载与视频水印.md",
+    "03_知识资产/项目/首页启动优化/04_本地变快后怎样安全推到线上.md",
+    "03_知识资产/项目/首页启动优化/03_Trace热点怎样变成代码根因和方案.md",
+    "03_知识资产/项目/首页启动优化/02_线下怎样证明时间花在哪里.md",
+    "03_知识资产/项目/首页启动优化/01_线上目标怎样收敛为线下问题.md",
+    "03_知识资产/有用.md",
+    "03_知识资产/项目/首页启动优化/00_阅读导航.md",
+    "03_知识资产/项目/首页启动优化/00_完整的启动优化治理体系.md",
+    "03_知识资产/项目/鸿蒙FFmpeg视频处理/05_码率已经解析_为什么仍不生效.md",
+    "03_知识资产/HR沟通问答_汉王友基终面.md",
+    "03_知识资产/hr谈薪专用.md",
+    "03_知识资产/HR沟通问答.md",
+    "03_知识资产/项目/ANR线上治理/02_系统为什么判定这次ANR.md",
+    "03_知识资产/项目/ANR线上治理/04_找到原因后_怎样完成闭环.md",
+    "03_知识资产/项目/鸿蒙FFmpeg视频处理/00_阅读导航.md",
+    "tmp/pdfs/resume-asu/original-style-final-3.png",
+    "tmp/pdfs/resume-asu/original-style-final-2.png",
+    "tmp/pdfs/resume-asu/original-style-final-1.png",
+    "tmp/pdfs/resume-asu/original-style-page-3.png",
+    "tmp/pdfs/resume-asu/original-style-page-2.png",
+    "tmp/pdfs/resume-asu/original-style-page-1.png",
+    "tmp/pdfs/resume-asu/redesign-final-page-2.png",
+    "tmp/pdfs/resume-asu/redesign-final-page-1.png",
+    "tmp/pdfs/resume-asu/redesign-page-2.png",
+    "tmp/pdfs/resume-asu/redesign-page-1.png"
+  ]
+}
