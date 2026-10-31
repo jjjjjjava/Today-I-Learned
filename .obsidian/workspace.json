@@ -42,12 +42,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03_知识资产/工作SOP/Android入职SOP.md",
+                "file": "03_知识资产/工作SOP/入职权限环境保存.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Android入职SOP"
+              "title": "入职权限环境保存"
             }
           },
           {
@@ -92,7 +92,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "03_知识资产/工作SOP/Android入职SOP.md",
+                "file": "03_知识资产/工作SOP/入职权限环境保存.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -265,10 +265,11 @@
       "bases:新建数据库": false
     }
   },
-  "active": "fdceb75c1e7d6089",
+  "active": "c2238fb05cc526ba",
   "lastOpenFiles": [
-    "需求.md",
+    "Pasted image 20261031163952.png",
     "03_知识资产/工作SOP/Android入职SOP.md",
+    "需求.md",
     "03_知识资产/工作SOP",
     "03_知识资产/工作sop/Android入职SOP.md",
     "03_知识资产/工作sop",
@@ -302,7 +303,6 @@
     "03_知识资产/HR沟通问答.md",
     "03_知识资产/项目/ANR线上治理/02_系统为什么判定这次ANR.md",
     "03_知识资产/项目/ANR线上治理/04_找到原因后_怎样完成闭环.md",
-    "03_知识资产/项目/鸿蒙FFmpeg视频处理/00_阅读导航.md",
     "tmp/pdfs/resume-asu/original-style-final-3.png",
     "tmp/pdfs/resume-asu/original-style-final-2.png",
     "tmp/pdfs/resume-asu/original-style-final-1.png",
